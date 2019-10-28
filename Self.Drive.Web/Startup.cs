@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Self.Drive.Web.Models;
+using Self.Drive.Web.Services;
+using Newtonsoft;
 
 namespace Self.Drive.Web
 {
@@ -30,7 +25,14 @@ namespace Self.Drive.Web
             services.Configure<DocumentsDatabaseSettings>(Configuration.GetSection(nameof(DocumentsDatabaseSettings)));
             services.AddSingleton<IDocumentsDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DocumentsDatabaseSettings>>().Value);
 
-            services.AddControllers();
+            services.AddSingleton<DocumentService>();
+
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.UseMemberCasing();
+                    options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
