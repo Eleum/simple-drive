@@ -12,6 +12,8 @@ namespace Self.Drive.Web
 {
     public class Startup
     {
+        private const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,6 +35,15 @@ namespace Self.Drive.Web
                     options.UseMemberCasing();
                     options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
                 });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200/");
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +64,8 @@ namespace Self.Drive.Web
             {
                 endpoints.MapControllers();
             });
+
+            app.UseCors(MyAllowSpecificOrigins);
         }
     }
 }
