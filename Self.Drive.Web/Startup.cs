@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Self.Drive.Web.Models;
 using Self.Drive.Web.Services;
-using Newtonsoft;
 
 namespace Self.Drive.Web
 {
