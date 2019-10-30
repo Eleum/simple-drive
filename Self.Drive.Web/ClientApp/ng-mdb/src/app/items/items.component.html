@@ -1,13 +1,20 @@
 <div class="container m-5">
     <div class="card">
         <div class="card-body">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="file">Choose a file</label>
-                    <input class="form-control" type="file" id="file" />
-                    <button class="btn btn-primary" type="button" onclick="">Submit</button>
+            <form [formGroup]="documentForm" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="document">Choose a file</label>
+                        <input class="form-control" type="file" id="document" formControlName="document" 
+                            (change)="onFileChange($event)" />
+                        <button class="btn btn-primary" type="button" (click)="prepareData()">Clear file</button>
+                    </div>
+                    <button class="btn btn-primary btn-block" type="submit" [disabled]="documentForm.invalid || loading">
+                        Submit
+                        <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i>
+                    </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
